@@ -11,6 +11,7 @@ import { SLACK_NODE_TYPE } from '@/constants';
 
 export class Telemetry {
 	private pageEventQueue: Array<{ route: RouteLocation }>;
+
 	private previousPath: string;
 
 	private get rudderStack() {
@@ -100,17 +101,12 @@ export class Telemetry {
 
 			const pageName = route.name;
 			let properties: { [key: string]: string } = {};
-			if (
-				route.meta &&
-				route.meta.telemetry &&
-				typeof route.meta.telemetry.getProperties === 'function'
-			) {
+			if (route.meta?.telemetry && typeof route.meta.telemetry.getProperties === 'function') {
 				properties = route.meta.telemetry.getProperties(route);
 			}
 
-			const category =
-				(route.meta && route.meta.telemetry && route.meta.telemetry.pageCategory) || 'Editor';
-			this.rudderStack.page(category, pageName!, properties);
+			const category = route.meta?.telemetry?.pageCategory || 'Editor';
+			this.rudderStack.page(category, pageName, properties);
 		} else {
 			this.pageEventQueue.push({
 				route,
@@ -204,7 +200,7 @@ export class Telemetry {
 		if (this.rudderStack) {
 			switch (nodeType) {
 				case SLACK_NODE_TYPE:
-					if (change.name === 'parameters.includeLinkToWorkflow') {
+					if (change.name === 'parameters.otherOptions.includeLinkToWorkflow') {
 						this.track('User toggled n8n reference option');
 					}
 					break;
