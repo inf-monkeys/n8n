@@ -213,6 +213,8 @@ export class WorkflowDataProxy {
 			},
 			get(target, name, receiver) {
 				if (name === 'isProxy') return true;
+				if (name === 'toString') return () => JSON.stringify(target);
+
 				name = name.toString();
 
 				let returnValue: NodeParameterValueType;
@@ -230,6 +232,9 @@ export class WorkflowDataProxy {
 
 					returnValue = node.parameters[name];
 				}
+
+				// Avoid recursion
+				if (returnValue === `={{ $parameter.${name} }}`) return undefined;
 
 				if (isResourceLocatorValue(returnValue)) {
 					if (returnValue.__regex && typeof returnValue.value === 'string') {

@@ -657,11 +657,14 @@ export const workflowHelpers = defineComponent({
 				return null;
 			}
 
-			if (typeof returnData['__xxxxxxx__'] === 'object') {
+			const obj = returnData['__xxxxxxx__'];
+			if (typeof obj === 'object') {
+				const proxy = obj as { isProxy: boolean; toString: () => string } | null;
+				if (proxy?.isProxy) return proxy.toString() ?? null;
 				const workflow = getCurrentWorkflow();
-				return workflow.expression.convertObjectValueToString(returnData['__xxxxxxx__'] as object);
+				return workflow.expression.convertObjectValueToString(obj as object);
 			}
-			return returnData['__xxxxxxx__'];
+			return obj;
 		},
 
 		async updateWorkflow(
