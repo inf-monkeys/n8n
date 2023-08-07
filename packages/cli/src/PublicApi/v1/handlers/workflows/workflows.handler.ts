@@ -199,7 +199,23 @@ export = {
 	runWorkflow: [
 		authorize(['owner', 'member']),
 		async (req: WorkflowRequest.ManualRun, res: express.Response): Promise<express.Response> => {
-			const result = await WorkflowsService.runManually(req.body, req.user, GenericHelpers.getSessionId(req));
+			const id = (req.params as any).id;
+			const sharedWorkflow = await getSharedWorkflow(req.user, id);
+			if (!sharedWorkflow) {
+				// user trying to access a workflow they do not own
+				// or workflow does not exist
+				return res.status(404).json({ message: 'Not Found' });
+			}
+			const result = await WorkflowsService.runManually(
+				{
+					workflowData: sharedWorkflow.workflow,
+					pinData: {},
+					startNodes: [],
+					runData: {},
+				},
+				req.user,
+				GenericHelpers.getSessionId(req),
+			);
 			return res.json(result);
 		},
 	],

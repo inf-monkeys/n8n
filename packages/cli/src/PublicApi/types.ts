@@ -82,11 +82,7 @@ export declare namespace WorkflowRequest {
 	>;
 
 	type ManualRunPayload = {
-		workflowData: IWorkflowDb;
-		runData: IRunData;
-		pinData: IPinData;
-		startNodes?: string[];
-		destinationNode?: string;
+		id: string;
 	};
 
 	type Create = AuthenticatedRequest<{}, {}, WorkflowEntity, {}>;
