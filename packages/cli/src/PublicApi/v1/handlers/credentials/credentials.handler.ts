@@ -20,8 +20,21 @@ import {
 	toJsonSchema,
 } from './credentials.service';
 import { Container } from 'typedi';
+import { NodeTypes } from '@/NodeTypes';
+const nodeTypes = Container.get(NodeTypes);
 
 export = {
+
+	getCredentialTypes: [
+		authorize(['owner', 'member']),
+		async (req: any, res: express.Response): Promise<express.Response> => {
+			const {
+				types: { credentials },
+			} = nodeTypes.getNodesAndCredentials();
+            return res.json(credentials);
+		},
+	],
+
 	createCredential: [
 		authorize(['owner', 'member']),
 		validCredentialType,

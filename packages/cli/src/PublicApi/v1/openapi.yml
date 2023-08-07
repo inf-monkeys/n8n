@@ -16,6 +16,8 @@ externalDocs:
 servers:
   - url: /api/v1
 tags:
+  - name: Nodes
+    description: Operations about nodes
   - name: User
     description: Operations about users
   - name: Audit
@@ -30,8 +32,12 @@ tags:
     description: Operations about source control
 
 paths:
+  /node-types:
+    $ref: './handlers/nodes/spec/paths/nodes.yml'
   /audit:
     $ref: './handlers/audit/spec/paths/audit.yml'
+  /credential-types:
+    $ref: './handlers/credentials/spec/paths/credentials.type.yml'
   /credentials:
     $ref: './handlers/credentials/spec/paths/credentials.yml'
   /credentials/{id}:
@@ -46,6 +52,8 @@ paths:
     $ref: './handlers/workflows/spec/paths/workflows.yml'
   /workflows/{id}:
     $ref: './handlers/workflows/spec/paths/workflows.id.yml'
+  /workflows/{id}/run:
+    $ref: './handlers/workflows/spec/paths/workflows.id.run.yml'
   /workflows/{id}/activate:
     $ref: './handlers/workflows/spec/paths/workflows.id.activate.yml'
   /workflows/{id}/deactivate:
@@ -55,7 +63,7 @@ paths:
   /users/{id}:
     $ref: './handlers/users/spec/paths/users.id.yml'
   /source-control/pull:
-    $ref: "./handlers/sourceControl/spec/paths/sourceControl.yml"
+    $ref: './handlers/sourceControl/spec/paths/sourceControl.yml'
 components:
   schemas:
     $ref: './shared/spec/schemas/_index.yml'

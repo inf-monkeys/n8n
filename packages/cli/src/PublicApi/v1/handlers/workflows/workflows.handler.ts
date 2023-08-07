@@ -2,7 +2,7 @@ import type express from 'express';
 import { Container } from 'typedi';
 import type { FindOptionsWhere } from 'typeorm';
 import { In } from 'typeorm';
-
+import * as GenericHelpers from '@/GenericHelpers';
 import { ActiveWorkflowRunner } from '@/ActiveWorkflowRunner';
 import config from '@/config';
 import { WorkflowEntity } from '@db/entities/WorkflowEntity';
@@ -195,6 +195,15 @@ export = {
 			return res.json(updatedWorkflow);
 		},
 	],
+
+	runWorkflow: [
+		authorize(['owner', 'member']),
+		async (req: WorkflowRequest.ManualRun, res: express.Response): Promise<express.Response> => {
+			const result = await WorkflowsService.runManually(req.body, req.user, GenericHelpers.getSessionId(req));
+			return res.json(result);
+		},
+	],
+
 	activateWorkflow: [
 		authorize(['owner', 'member']),
 		async (req: WorkflowRequest.Activate, res: express.Response): Promise<express.Response> => {

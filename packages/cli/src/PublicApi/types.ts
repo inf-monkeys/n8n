@@ -1,5 +1,5 @@
 import type express from 'express';
-import type { IDataObject, ExecutionStatus } from 'n8n-workflow';
+import type { IDataObject, ExecutionStatus, IRunData, IPinData } from 'n8n-workflow';
 
 import type { User } from '@db/entities/User';
 
@@ -10,6 +10,7 @@ import type { WorkflowEntity } from '@db/entities/WorkflowEntity';
 import type { UserManagementMailer } from '@/UserManagement/email';
 
 import type { Risk } from '@/audit/types';
+import { IWorkflowDb } from '@/Interfaces';
 
 export type AuthlessRequest<
 	RouteParams = {},
@@ -80,11 +81,20 @@ export declare namespace WorkflowRequest {
 		}
 	>;
 
+	type ManualRunPayload = {
+		workflowData: IWorkflowDb;
+		runData: IRunData;
+		pinData: IPinData;
+		startNodes?: string[];
+		destinationNode?: string;
+	};
+
 	type Create = AuthenticatedRequest<{}, {}, WorkflowEntity, {}>;
 	type Get = AuthenticatedRequest<{ id: string }, {}, {}, {}>;
 	type Delete = Get;
 	type Update = AuthenticatedRequest<{ id: string }, {}, WorkflowEntity, {}>;
 	type Activate = Get;
+	type ManualRun = AuthenticatedRequest<{}, {}, ManualRunPayload>;
 }
 
 export declare namespace UserRequest {

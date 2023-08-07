@@ -1,0 +1,12 @@
+get:
+  x-eov-operation-id: getNodes
+  x-eov-operation-handler: v1/handlers/nodes/nodes.handler
+  tags:
+    - Workflow
+  summary: Retrieve all node types
+  description: Retrieve all node types from your instance.
+  responses:
+    '200':
+      description: Operation successful.
+    '401':
+      $ref: '../../../../shared/spec/responses/unauthorized.yml'
