@@ -7,7 +7,7 @@ import type { CredentialsEntity } from '@db/entities/CredentialsEntity';
 import type { CredentialRequest } from '@/requests';
 import type { CredentialTypeRequest } from '../../../types';
 import { authorize } from '../../shared/middlewares/global.middleware';
-import { validCredentialsProperties, validCredentialType } from './credentials.middleware';
+import { validCredentialType } from './credentials.middleware';
 
 import {
 	createCredential,
@@ -38,7 +38,7 @@ export = {
 	createCredential: [
 		authorize(['owner', 'member']),
 		validCredentialType,
-		validCredentialsProperties,
+		// validCredentialsProperties,
 		async (
 			req: CredentialRequest.Create,
 			res: express.Response,
